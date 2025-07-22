@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Journal</title>
+  <link rel="manifest" href="manifest.json" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgb(0, 0, 0),rgb(165, 21, 140),rgb(236, 239, 202));
+      color: white;
+      overflow: hidden;
+    }
+    .container {
+      text-align: center;
+      padding: 20px;
+      z-index: 2;
+    }
+    .welcome-message {
+      font-size: 4rem;
+      margin-bottom: 20px;
+	  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: rgb(124, 69, 133);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: rgb(0,0,0);
+    }
+    .quote {
+      font-size: 48px;
+      font-weight: bold;
+      text-align: center;
+      padding: 1rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      color: white;
+      display: none;
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+
+    }
+    .background-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.2;
+      z-index: 1;
+    }
+    @media (max-width: 600px) {
+      .quote {
+        font-size: 1.2rem;
+        padding: 0.5rem;
+      }
+      .welcome-message {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-image" id="bg"></div>
+  <div class="container" id="welcomePage">
+    <div class="welcome-message">My Journal</div>
+    <button onclick="showQuote()">Go</button>
+  </div>
+  <div class="quote" id="quote"></div>
+
+  <script>
+    const quotes = [
+       "Your favorite part of today",
+	  "Your best memory from this year, so far",
+	  "The happiest you've ever felt",
+	  "The hardest you've ever cried",
+	  "Your biggest regret",
+	  "The accomplishments you're most proud of",
+	  "Whatever comes to your mind —don't stop for 10 minutes",
+	  "A letter to yourself five years from now",
+	  "Your favorite childhood memory",
+	  "What you'd say to your favorite celebrity",
+	  "Where you'd like to be in life 20 years from now",
+	  "A short story",
+	  "Are you happy right now? Why or why not?",
+	  "Where would you go if you could be anywhere in the world right now?",
+	  "The first thing you'd do if you won the lottery",
+	  "What you want to improve about yourself",
+	  "Your best qualities",
+	  "Your short-term and long-term goals",
+	  "What you love most about your SO or best friend",
+	  "What you're most grateful for",
+	  "Your dream date",
+	  "Your dream career if money weren't an issue",
+	  "Your life story in one paragraph",
+	  "What would make your life complete?",
+	  "Your last remembered dream",
+	  "The craziest night you've ever had",
+	  "The worst experience you've ever had",
+	  "Your most embarrassing memory",
+	  "A letter to someone who did you wrong",
+	  "Who you look up to",
+	  "Your biggest fears",
+	  "What's stressing you out the most right now?",
+	  "Your day only in single words or short phrases",
+	  "Make up a story",
+	  "If you could change your life, would you?",
+	  "What you'd say to your childhood crush",
+	  "Your first kiss",
+	  "Who you love most in this world",
+	  "Your definition of happiness",
+	  "If you had to give up one of your five senses, which would it be?",
+	  "Your favorite gift of all time",
+	  "What superpower you'd choose",
+	  "Write about your week",
+	  "What you'd do if there were no laws in this world",
+	  "What you'd do if you only had one month left to live",
+	  "What you admire most about your friends",
+	  "Your first love",
+	  "What you'd want your last words to be",
+	  "One thing you couldn't live without",
+	  "If you could change one thing about today",
+	  "What you'd tell your high school self",
+	  "The best piece of advice you've ever gotten",
+	  "Your values",
+	  "The last person you cried in front of and why",
+	  "Would you want to be famous?",
+	  "The nicest thing someone's ever done for you",
+	  "Your last fight",
+	  "Who you'd want to be stuck in an elevator with",
+	  "A thank-you letter to anybody",
+	  "What you're feeling at this second",
+	  "What you'd do if you could stop the world for 24 hours",
+	  "Your worst quality",
+	  "Something you've never told anyone before",
+	  "What you'd change if you could redo college",
+	  "How you'd define yourself to a stranger",
+	  "The best feeling in the world",
+	  "The moment you're most ashamed of",
+	  "A goodbye letter to someone who doesn't deserve to be in your life",
+	  "How you can improve as a partner or friend",
+	  "Your ultimate goal in life",
+	  "The angriest you've ever felt",
+	  "The most scared you've ever felt",
+	  "The worst date you've ever gone on",
+	  "The most fun you've ever had",
+	  "What you'd do if you were the last person on earth",
+	  "What you'd apologize to your parents or family for",
+	  "The one moment you would take back if you could",
+	  "The most meaningful item you own",
+	  "The most important person in your life",
+	  "What you've always wanted to tell somebody",
+	  "The most important thing you've learned",
+	  "Did you expect your life to be the way it is today?",
+	  "One memory you'll never forget",
+	  "A day you'd like to forget",
+	  "A moment or experience that changed your life",
+	  "Things that make you happy",
+	  "How are you the same or different from your child self?",
+	  "Describe your perfect weekend",
+	  "What makes you angry?",
+	  "Something you've always wanted to do",
+	  "Things you take for granted every day",
+	  "The most difficult decision you've ever had to make",
+	  "A time you surprised yourself",
+	  "The most someone has disappointed you",
+	  "The loneliest you've ever felt",
+	  "Someone you think about every single day",
+	  "A lesson you've learned from a friend",
+	  "A time you helped someone",
+	  "What you'd wish for if you had three wishes",
+	  "The most unfair thing that's happened to you",
+	  "A memory that fills you with joy",
+	  "Three things you'd grab from your home during an emergency",
+	  "The most awkward you've ever felt",
+	  "Three fears you want to overcome this year",
+	  "Could you be taking better care of yourself?",
+	  "A family member who means the most to you",
+	  "Your greatest challenge and how you overcame it",
+	  "How a book affected you",
+	  "Your biggest goal for this year",
+	  "A skill you want to acquire and why",
+	  "Your favorite holiday memory",
+	  "A person no longer in your life",
+	  "A secret you want to let go of",
+	  "A quality you admire most about a coworker",
+	  "Nice things people have said to you or done for you this week",
+	  "A list of things you can do to help others",
+	  "Three predictions for the year",
+	  "What will be the same or different in your life one year from now?",
+	  "Your definition of success",
+	  "A time you learned from a mistake",
+	  "The victory you're most proud of",
+	  "Your favorite quotes",
+	  "A list of your all-time favorite songs",
+	  "Something sweet you were told that made you cry",
+	  "Someone you're especially thankful for this past year",
+	  "A teacher or professor you learned the most from",
+	  "The last time you laughed so hard, your stomach hurt",
+	  "What's bothering you this very second?",
+	  "Something you'll never tell your parents",
+	  "The best compliment you've ever received",
+	  "A habit you want to pick up",
+	  "A habit you want to get rid of",
+	  "Qualities you look for in a partner",
+	  "How you're different now compared to this time last year",
+	  "A happy moment that brought you to tears",
+	  "What's your focus for this week?",
+	  "Something you would change about the world",
+	  "Everything good that happened last week",
+	  "Make a rap about your day",
+	  "Something you want a second chance on",
+	  "Something you'll always secretly hold a grudge for",
+	  "Are you living as your authentic self?",
+	  "Your first thought when you woke up",
+	  "Are you putting enough effort into your relationships?",
+	  "Something your mind and/or body needs most right now",
+	  "What's stopping you from pursuing your dreams?",
+	  "The last time you pushed yourself out of your comfort zone",
+	  "Your biggest insecurities",
+	  " A love letter to yourself"
+    ];
+
+    const images = [
+       "images/1.jpg",
+      "images/2.jpg",
+      "images/3.jpg",
+      "images/4.jpg",
+	   "images/5.jpg",
+      "images/6.jpg",
+      "images/7.jpg",
+      "images/8.jpg",
+	   "images/9.jpg",
+      "images/10.jpg",
+      "images/11.jpg",
+      "images/12.jpg",
+	   "images/13.jpg",
+      "images/14.jpg",
+      "images/15.jpg",
+      "images/16.jpg",
+	  "images/17.jpg",
+      "images/18.jpg",
+      "images/19.jpg",
+      "images/20.jpg",
+	  "images/21.jpg",
+      "images/22.jpg",
+      "images/23.jpg",
+      "images/24.jpg",
+	   "images/25.jpg",
+      "images/26.jpg",
+      "images/27.jpg",
+      "images/27.jpg",
+	  "images/28.jpg",
+      "images/29.jpg",
+	  "images/30.jpg",
+      "images/31.jpg",
+      "images/32.jpg",
+      "images/33.jpg",
+	   "images/34.jpg",
+      "images/35.jpg",
+      "images/36.jpg",
+      "images/37.jpg",
+	   "images/38.jpg",
+      "images/39.jpg",
+      "images/40.jpg",
+      "images/41.jpg",
+	  "images/42.jpg",
+      "images/43.jpg",
+	  "images/44.jpg",
+      "images/45.jpg",
+      "images/46.jpg",
+      "images/47.jpg",
+	  "images/48.jpg",
+      "images/49.jpg",
+	  "images/50.jpg",
+      "images/51.jpg",
+      "images/52.jpg"
+    ];
+
+    let usedQuotes = JSON.parse(localStorage.getItem("usedQuotes")) || [];
+    let usedImages = JSON.parse(localStorage.getItem("usedImages")) || [];
+
+    function getRandomItem(arr, usedArr, storageKey) {
+      const available = arr.filter(item => !usedArr.includes(item));
+      if (available.length === 0) {
+        usedArr.length = 0;
+        localStorage.setItem(storageKey, JSON.stringify(usedArr));
+        return getRandomItem(arr, usedArr, storageKey);
+      }
+      const item = available[Math.floor(Math.random() * available.length)];
+      usedArr.push(item);
+      localStorage.setItem(storageKey, JSON.stringify(usedArr));
+      return item;
+    }
+
+    function showQuote() {
+      document.getElementById("welcomePage").style.display = "none";
+      const quoteText = getRandomItem(quotes, usedQuotes, "usedQuotes");
+      const bgImage = getRandomItem(images, usedImages, "usedImages");
+
+      document.getElementById("quote").innerText = quoteText;
+      document.getElementById("quote").style.display = "block";
+      document.getElementById("bg").style.backgroundImage = `url('${bgImage}')`;
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(() => console.log('Service Worker Registered'));
+    }
+  </script>
+</body>
+</html>
